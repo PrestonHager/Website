@@ -49,6 +49,16 @@ Currently, the app supports Email/Password, Google, and Apple signins.
 Next, navigate to "Cloud Firestore" and create a new database.
 We also recommend enable "App Check" in the Firebase Console to protect your app from abuse.
 
+### Deploy to Firebase
+
+In the Firebase Console, add Hosting to your project.
+Then, run `firebase deploy` to deploy the app to Firebase Hosting.
+To change the domain, do so in the Firebase Console under "Hosting".
+Click "Add custom domain" and follow the prompts.
+
+Testing the app through a preview is recommended before deploying to production.
+When using GitHub, this is automatically done through GitHub Actions whenever a pull request is created.
+
 ## Contributing
 
 Although this has been a project for the New Mexico State University Google Developer Student Club, we welcome contributions from anyone.

@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "firebase": "^10.9.0",
+    "firebase-tools": "^13.5.1"
+  },
+  "scripts": {
+    "build": ""
+  }
+}

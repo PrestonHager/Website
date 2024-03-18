@@ -45,3 +45,9 @@ app.*.map.json
 # Visual Studio
 .vs/
 .vscode/
+
+# NPM
+node_modules/
+
+# Firebase
+.firebase/

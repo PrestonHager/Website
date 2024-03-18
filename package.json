@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "firebase": "^10.9.0"
+  },
+  "scripts": {
+    "build": ""
   }
 }

@@ -1,138 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:logging/logging.dart';
 
-void main() => runApp(const SignUpApp());
+import 'package:nmsu_gsdc_website/login.dart';
+import 'package:nmsu_gsdc_website/signup.dart';
+import 'package:nmsu_gsdc_website/profile.dart';
+import 'package:nmsu_gsdc_website/firebase_options.dart';
 
-class SignUpApp extends StatelessWidget {
-  const SignUpApp({super.key});
+void main() async {
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((record) {
+    print('${record.level.name}: ${record.time}: ${record.message}');
+  });
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(const PortfolioApp());
+}
+
+class PortfolioApp extends StatelessWidget {
+  const PortfolioApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => const SignUpScreen(),
+        '/': (context) => const MainScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignUpScreen(),
         '/welcome': (context) => const WelcomeScreen(),
+        '/profile': (context) => const ProfileScreen(),
       },
     );
   }
 }
 
-class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: const Center(
-        child: SizedBox(
-          width: 400,
-          child: Card(
-            child: SignUpForm(),
+      appBar: AppBar(
+        title: const Text('NMSU GSDC Portfolio'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person_add),
+            onPressed: () {
+              Navigator.popAndPushNamed(context, '/signup');
+            },
           ),
-        ),
+          IconButton(
+            icon: const Icon(Icons.login),
+            onPressed: () {
+              Navigator.popAndPushNamed(context, '/login');
+            },
+          ),
+        ],
       ),
-    );
-  }
-}
-
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          'Welcome!',
-          style: Theme.of(context).textTheme.displayMedium,
+      body: GridView(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
         ),
-      ),
-    );
-  }
-}
-
-class SignUpForm extends StatefulWidget {
-  const SignUpForm({super.key});
-
-  @override
-  State<SignUpForm> createState() => _SignUpFormState();
-}
-
-class _SignUpFormState extends State<SignUpForm> {
-  final _firstNameTextController = TextEditingController();
-  final _lastNameTextController = TextEditingController();
-  final _usernameTextController = TextEditingController();
-
-  double _formProgress = 0;
-
-  void _updateFormProgress() {
-    var progress = 0.0;
-    final controllers = [
-      _firstNameTextController,
-      _lastNameTextController,
-      _usernameTextController
-    ];
-
-    for (final controller in controllers) {
-      if (controller.value.text.isNotEmpty) {
-        progress += 1 / controllers.length;
-      }
-    }
-
-    setState(() {
-      _formProgress = progress;
-    });
-  }
-
-  void _showWelcomeScreen() {
-    Navigator.of(context).pushNamed('/welcome');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      onChanged: _updateFormProgress,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          LinearProgressIndicator(value: _formProgress),
-          Text('Sign up', style: Theme.of(context).textTheme.headlineMedium),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: TextFormField(
-              controller: _firstNameTextController,
-              decoration: const InputDecoration(hintText: 'First name'),
+        children: const [
+          Card(
+            child: Column(
+              children: [
+                Text('Project 1'),
+                Text('Description 1'),
+              ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: TextFormField(
-              controller: _lastNameTextController,
-              decoration: const InputDecoration(hintText: 'Last name'),
+          Card(
+            child: Column(
+              children: [
+                Text('Project 2'),
+                Text('Description 2'),
+              ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: TextFormField(
-              controller: _usernameTextController,
-              decoration: const InputDecoration(hintText: 'Username'),
+          Card(
+            child: Column(
+              children: [
+                Text('Project 3'),
+                Text('Description 3'),
+              ],
             ),
           ),
-          TextButton(
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.resolveWith((states) {
-                return states.contains(MaterialState.disabled)
-                    ? null
-                    : Colors.white;
-              }),
-              backgroundColor: MaterialStateProperty.resolveWith((states) {
-                return states.contains(MaterialState.disabled)
-                    ? null
-                    : Colors.blue;
-              }),
+          Card(
+            child: Column(
+              children: [
+                Text('Project 4'),
+                Text('Description 4'),
+              ],
             ),
-            onPressed: _formProgress == 1 ? _showWelcomeScreen : null,
-            child: const Text('Sign up'),
           ),
         ],
       ),
